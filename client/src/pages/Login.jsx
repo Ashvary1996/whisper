@@ -16,11 +16,23 @@ import { validationSchema } from "../utils/validators";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
+  const [avatar, setAvatar] = useState(null);
 
   const toggleLogin = () => {
     setIsLogin((prev) => !prev);
   };
-
+  const handleAvatarChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setAvatar(imageUrl);
+      // const reader = new FileReader();
+      // reader.onloadend = () => {
+      //   setAvatar(reader.result);
+      // };
+      // reader.readAsDataURL(file);
+    }
+  };
   return (
     <div style={{ backgroundImage: "linear-gradient(45deg, black, #6cb36e)" }}>
       <Container
@@ -122,6 +134,7 @@ function Login() {
                       margin={"auto"}
                     >
                       <Avatar
+                        src={avatar}
                         sx={{
                           width: "10rem",
                           height: "10rem",
@@ -134,7 +147,11 @@ function Login() {
                       >
                         <>
                           <CameraIco />
-                          <VisuallyHiddenInput type="file" accept="image/*" />
+                          <VisuallyHiddenInput
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarChange}
+                          />
                         </>
                       </IconButton>
                     </Stack>
