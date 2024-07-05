@@ -11,170 +11,200 @@ import {
 } from "@mui/material";
 import { CameraAlt as CameraIco } from "@mui/icons-material";
 import { VisuallyHiddenInput } from "../components/styles/style";
+import { Formik, Form, Field } from "formik";
+import { validationSchema } from "../utils/validators";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
+
   const toggleLogin = () => {
     setIsLogin((prev) => !prev);
   };
 
   return (
-    <Container
-      component={"main"}
-      maxWidth="xs"
-      sx={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Paper
-        elevation={3}
+    <div style={{ backgroundImage: "linear-gradient(45deg, black, #6cb36e)" }}>
+      <Container
+        component={"main"}
+        maxWidth="xs"
         sx={{
-          padding: 4,
+          height: "100vh",
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >
-        {isLogin ? (
-          <>
-            <Typography variant="h5">Login</Typography>
-            <form
-              style={{
-                width: "100%",
-                marginTop: "1rem",
-              }}
-            >
-              <TextField
-                required={true}
-                fullWidth
-                label="Username"
-                margin="normal"
-                variant="outlined"
-              ></TextField>
-              <TextField
-                required={true}
-                fullWidth
-                label="Password"
-                type="password"
-                margin="normal"
-                variant="outlined"
-              ></TextField>
-              <Button
-                sx={{
-                  marginTop: "1rem",
+        <Paper
+          elevation={3}
+          sx={{
+            padding: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {isLogin ? (
+            <>
+              <Typography variant="h5">Login</Typography>
+              <Formik
+                initialValues={{ username: "", password: "" }}
+                validationSchema={validationSchema}
+                onSubmit={(values) => {
+                  console.log(values);
                 }}
-                variant="contained"
-                color="primary"
-                type="submit"
-                fullWidth
               >
-                Login
-              </Button>
-              <Typography textAlign={"center"} m={"1rem"}>
-                OR
-              </Typography>
-              <Button
-                type="submit"
-                fullWidth
-                variant="text"
-                // color="secondary"
-                onClick={() => setIsLogin(false)}
-              >
-                Sign Up Instead
-              </Button>
-            </form>
-          </>
-        ) : (
-          <>
-            <Typography variant="h5">Sign-Up</Typography>
-            <form
-              style={{
-                width: "100%",
-                marginTop: "1rem",
-              }}
-            >
-              <Stack position={"relative"} width={"10rem"} margin={"auto"}>
-                <Avatar
-                  sx={{
-                    width: "10rem",
-                    height: "10rem",
-                    objectFit: "contain",
-                  }}
-                />
-                <IconButton
-                  sx={{
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                  }}
-                  component="label"
-                >
-                  <>
-                    <CameraIco />
-                    <VisuallyHiddenInput type="file" accept="image/*" />
-                  </>
-                </IconButton>
-              </Stack>
-              <TextField
-                required={true}
-                fullWidth
-                label="Name"
-                margin="normal"
-                variant="outlined"
-              ></TextField>
-              <TextField
-                required={true}
-                fullWidth
-                label="Username"
-                margin="normal"
-                variant="outlined"
-              ></TextField>
-              <TextField
-                required={true}
-                fullWidth
-                label="Bio"
-                margin="normal"
-                variant="outlined"
-              ></TextField>
-              <TextField
-                required={true}
-                fullWidth
-                label="Password"
-                type="password"
-                margin="normal"
-                variant="outlined"
-              ></TextField>
-              <Button
-                sx={{
-                  marginTop: "1rem",
+                {({ errors, touched }) => (
+                  <Form style={{ width: "100%", marginTop: "1rem" }}>
+                    <Field
+                      name="username"
+                      as={TextField}
+                      label="Username"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={touched.username && !!errors.username}
+                      helperText={touched.username && errors.username}
+                    />
+                    <Field
+                      name="password"
+                      as={TextField}
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={touched.password && !!errors.password}
+                      helperText={touched.password && errors.password}
+                    />
+                    <Button
+                      sx={{ marginTop: "1rem" }}
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      fullWidth
+                    >
+                      Login
+                    </Button>
+                    <Typography textAlign={"center"} m={"1rem"}>
+                      OR
+                    </Typography>
+                    <Button
+                      type="button"
+                      fullWidth
+                      variant="text"
+                      onClick={toggleLogin}
+                    >
+                      Sign Up Instead
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
+            </>
+          ) : (
+            <>
+              <Typography variant="h5">Sign-Up</Typography>
+              <Formik
+                initialValues={{
+                  name: "",
+                  username: "",
+                  bio: "",
+                  password: "",
                 }}
-                variant="contained"
-                color="primary"
-                type="submit"
-                fullWidth
+                validationSchema={validationSchema}
+                onSubmit={(values) => {
+                  console.log(values);
+                }}
               >
-                Sign-Up
-              </Button>
-              <Typography textAlign={"center"} m={"1rem"}>
-                OR
-              </Typography>
-              <Button
-                type="submit"
-                fullWidth
-                variant="text"
-                // color="secondary"
-                onClick={toggleLogin}
-              >
-                LOG IN INSTEAD
-              </Button>
-            </form>
-          </>
-        )}
-      </Paper>
-    </Container>
+                {({ errors, touched }) => (
+                  <Form style={{ width: "100%", marginTop: "1rem" }}>
+                    <Stack
+                      position={"relative"}
+                      width={"10rem"}
+                      margin={"auto"}
+                    >
+                      <Avatar
+                        sx={{
+                          width: "10rem",
+                          height: "10rem",
+                          objectFit: "contain",
+                        }}
+                      />
+                      <IconButton
+                        sx={{ position: "absolute", bottom: 0, right: 0 }}
+                        component="label"
+                      >
+                        <>
+                          <CameraIco />
+                          <VisuallyHiddenInput type="file" accept="image/*" />
+                        </>
+                      </IconButton>
+                    </Stack>
+                    <Field
+                      name="name"
+                      as={TextField}
+                      label="Name"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={touched.name && !!errors.name}
+                      helperText={touched.name && errors.name}
+                    />
+                    <Field
+                      name="username"
+                      as={TextField}
+                      label="Username"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={touched.username && !!errors.username}
+                      helperText={touched.username && errors.username}
+                    />
+                    <Field
+                      name="bio"
+                      as={TextField}
+                      label="Bio"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                    />
+                    <Field
+                      name="password"
+                      as={TextField}
+                      type="password"
+                      label="Password"
+                      variant="outlined"
+                      fullWidth
+                      margin="normal"
+                      error={touched.password && !!errors.password}
+                      helperText={touched.password && errors.password}
+                    />
+                    <Button
+                      sx={{ marginTop: "1rem" }}
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      fullWidth
+                    >
+                      Sign-Up
+                    </Button>
+                    <Typography textAlign={"center"} m={"1rem"}>
+                      OR
+                    </Typography>
+                    <Button
+                      type="button"
+                      fullWidth
+                      variant="text"
+                      onClick={toggleLogin}
+                    >
+                      LOG IN INSTEAD
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
+            </>
+          )}
+        </Paper>
+      </Container>
+    </div>
   );
 }
 
